@@ -5,7 +5,6 @@ using Bookstore.Infrestructure.Filters;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.OData.Formatter;
 using Microsoft.AspNetCore.OData.Query;
 
 namespace Bookstore.API.Controllers
@@ -27,28 +26,30 @@ namespace Bookstore.API.Controllers
         [EnableQuery]
         [RespuestaOdataActionFilter]
         //[Authorize]
-        public async Task<IActionResult> ObtenerBooks(ODataQueryOptions<BookReadDto> filtros)
+        public async Task<IActionResult> GetBooks(ODataQueryOptions<BookReadDto> filtros)
         {
+            _logger.LogInformation("Getting items from {Methods} at {RunTime}", nameof(GetBooks), DateTime.Now);
             var resultado = await Mediator.Send(new BooksQuery(filtros));
 
             if (resultado.Any())
                 return Ok(resultado);
 
-
+            _logger.LogWarning("Not found items from {Methods} at {RunTime}", nameof(GetBooks), DateTime.Now);
             return NoContent();
         }
 
         [HttpGet("{id}")]
         
         //[Authorize]
-        public async Task<IActionResult> ObtenerBook(int id)
+        public async Task<IActionResult> GetBook(int id)
         {
+            _logger.LogInformation("Getting item {Id} from {Methods} at {RunTime}", id, nameof(GetBook), DateTime.Now);
             var resultado = await Mediator.Send(new BookQuery(id));
 
             if (resultado != null)
                 return Ok(resultado);
 
-
+            _logger.LogWarning("Not found item {Id} from {Methods} at {RunTime}", id, nameof(GetBook), DateTime.Now);
             return NoContent();
         }
     }
