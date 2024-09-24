@@ -11,5 +11,6 @@ namespace Bookstore.Infrestructure
         }
 
         public DbSet<Book> Books { get; set; }
+        public DbSet<Usuario> Usuarios { get; set; }
     }
 }

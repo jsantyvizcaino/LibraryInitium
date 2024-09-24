@@ -1,11 +1,18 @@
 using Bookstore.API.Configurations;
+using Bookstore.API.Extensions;
 using Bookstore.Application;
+using Bookstore.Application.DTOs;
 using Bookstore.Infrestructure;
 using Microsoft.AspNetCore.OData;
 using Microsoft.OpenApi.Models;
+using Shared;
+using Steeltoe.Extensions.Configuration.ConfigServer;
 
+ObtenerConfiguracion(out var configuration);
 var builder = WebApplication.CreateBuilder(args);
-var configuration = builder.Configuration;
+var appSettings = new AppSettings();
+configuration.Bind(appSettings);
+builder.Services.Configure<AppSettings>(configuration);
 
 
 builder.Services.AddControllers();
@@ -14,6 +21,7 @@ builder.Services.AddEndpointsApiExplorer();
 
 builder.Services.AddAplicationService();
 builder.Services.AddIfraServices(configuration);
+builder.Services.AddSharedInfraestructure(configuration);
 
 builder.Services.AddCors(options =>
 {
@@ -46,9 +54,9 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-
+app.UseAuthentication();
 app.UseAuthorization();
-
+app.UseErrorHandlingMiddleware();
 app.MapControllers();
 
 app.Run();
@@ -70,7 +78,19 @@ static void ConfiguracionSwagger(IServiceCollection services)
                 Name = "Santiago Vizcaino",
                 Email = "jorgesantiagovizcaino@gmail.com"
             }
-        });
-      
+        });        
+    
+
     });
+}
+
+static void ObtenerConfiguracion(out IConfiguration configuration)
+{
+    var directoryPath = AppDomain.CurrentDomain.BaseDirectory;
+    configuration = new ConfigurationBuilder()
+        .SetBasePath(directoryPath)
+        .AddJsonFile($"appsettings.{Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT")}.json")
+        .AddEnvironmentVariables()
+        .AddConfigServer()
+        .Build();
 }

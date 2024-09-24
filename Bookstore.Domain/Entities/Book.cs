@@ -10,13 +10,17 @@ namespace Bookstore.Domain.Entities
     {
         public int Id { get; set; }
 
-        public string Title { get; set; } = string.Empty;
+        public string Title { get; set; } = null!;
 
-        public string Author { get; set; } = string.Empty;
+        public string Author { get; set; } = null!;
 
-        public int PublishedYear { get; set; } 
+        public int PublishedYear { get; set; }
 
-        public string Genre { get; set; } = string.Empty;
+        public string Genre { get; set; } = null!;
+
+        public int? UsuarioId { get; set; }
+
+        public virtual Usuario? Usuario { get; set; }
 
     }
 }

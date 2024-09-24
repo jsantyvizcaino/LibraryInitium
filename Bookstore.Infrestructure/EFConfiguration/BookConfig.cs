@@ -6,32 +6,23 @@ namespace Bookstore.Infrestructure.EFConfiguration
 {
     internal class BookConfig : IEntityTypeConfiguration<Book>
     {
-        public void Configure(EntityTypeBuilder<Book> builder)
+        public void Configure(EntityTypeBuilder<Book> entity)
         {
-            builder.Property<int>("Id")
-                         .ValueGeneratedOnAdd()
-                         .HasColumnType("int");
+            entity.HasKey(e => e.Id).HasName("PK__Books__3214EC07046604E7");
 
-            SqlServerPropertyBuilderExtensions.UseIdentityColumn(builder.Property<int>("Id"));
+            entity.Property(e => e.Author)
+                .HasMaxLength(255)
+                .IsUnicode(false);
+            entity.Property(e => e.Genre)
+                .HasMaxLength(100)
+                .IsUnicode(false);
+            entity.Property(e => e.Title)
+                .HasMaxLength(255)
+                .IsUnicode(false);
 
-            builder.Property<string>("Author")
-                .IsRequired()
-                .HasColumnType("nvarchar(max)");
-
-            builder.Property<string>("Genre")
-                .IsRequired()
-                .HasColumnType("nvarchar(max)");
-
-            builder.Property<int>("PublishedYear")
-                .HasColumnType("int");
-
-            builder.Property<string>("Title")
-                .IsRequired()
-                .HasColumnType("nvarchar(max)");
-
-            builder.HasKey("Id");
-
-            builder.ToTable("Books");
+            entity.HasOne(d => d.Usuario).WithMany(p => p.Books)
+                .HasForeignKey(d => d.UsuarioId)
+                .HasConstraintName("FK__Books__UsuarioId__3B75D760");
         }
     }
 }
