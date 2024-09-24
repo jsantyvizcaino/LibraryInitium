@@ -5,6 +5,7 @@ using Bookstore.Infrestructure.Filters;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.OData.Formatter;
 using Microsoft.AspNetCore.OData.Query;
 
 namespace Bookstore.API.Controllers
@@ -26,11 +27,25 @@ namespace Bookstore.API.Controllers
         [EnableQuery]
         [RespuestaOdataActionFilter]
         //[Authorize]
-        public async Task<IActionResult> ObtenerTodosAdminAccionRoleSamweb(ODataQueryOptions<BookReadDto> filtros)
+        public async Task<IActionResult> ObtenerBooks(ODataQueryOptions<BookReadDto> filtros)
         {
             var resultado = await Mediator.Send(new BooksQuery(filtros));
 
             if (resultado.Any())
+                return Ok(resultado);
+
+
+            return NoContent();
+        }
+
+        [HttpGet("{id}")]
+        
+        //[Authorize]
+        public async Task<IActionResult> ObtenerBook(int id)
+        {
+            var resultado = await Mediator.Send(new BookQuery(id));
+
+            if (resultado != null)
                 return Ok(resultado);
 
 
