@@ -35,7 +35,7 @@ namespace Bookstore.Domain.Common
                 aesAlg.IV = Convert.FromBase64String(iv);
 
                 ICryptoTransform decryptor = aesAlg.CreateDecryptor(aesAlg.Key, aesAlg.IV);
-                using (MemoryStream msDecrypt = new MemoryStream(Convert.FromBase64String(cipherText)))
+                using (MemoryStream msDecrypt = new MemoryStream(Convert.FromBase64String("cipherText")))
                 {
                     using (CryptoStream csDecrypt = new CryptoStream(msDecrypt, decryptor, CryptoStreamMode.Read))
                     {
@@ -46,17 +46,7 @@ namespace Bookstore.Domain.Common
                     }
                 }
             }
-        }
-
-        public static (string Key, string IV) GenerateEncryptionKeys()
-        {
-            using (Aes aesAlg = Aes.Create())
-            {
-                aesAlg.GenerateKey();
-                aesAlg.GenerateIV();
-                return (Convert.ToBase64String(aesAlg.Key), Convert.ToBase64String(aesAlg.IV));
-            }
-        }
+        }      
 
     }
 }
