@@ -1,5 +1,6 @@
 ﻿using Bookstore.Domain.Entities;
 using Bookstore.Domain.Interfaces;
+using Microsoft.EntityFrameworkCore;
 
 namespace Bookstore.Infrestructure.Repositories
 {
@@ -16,6 +17,15 @@ namespace Bookstore.Infrestructure.Repositories
         {
             return _context.Set<Book>();
         }
-       
+
+        public Book? GetById(int id)
+        {
+            return _context.Set<Book>().FirstOrDefault(x=>x.Id.Equals(id));
+        }
+
+        Task<Book?> IBookRepository.GetById(int id)
+        {
+            return _context.Set<Book>().FirstOrDefaultAsync(x => x.Id.Equals(id));
+        }
     }
 }
