@@ -12,6 +12,7 @@ namespace Bookstore.Infrestructure
         {
             serviceCollection.AddDbContext<LibraryContext>(opt => opt.UseSqlServer(configuration.GetConnectionString("BookstoreCon")));
             serviceCollection.AddScoped<IBookRepository, BookRepository>();
+            serviceCollection.AddScoped<IUserRepository, UserRepository>();
 
             return serviceCollection;
         }
