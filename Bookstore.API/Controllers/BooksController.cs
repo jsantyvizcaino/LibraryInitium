@@ -28,7 +28,7 @@ namespace Bookstore.API.Controllers
         [HttpGet]
         [EnableQuery]
         [RespuestaOdataActionFilter]
-        //[Authorize]
+        [Authorize]
         public async Task<IActionResult> GetBooks(ODataQueryOptions<BookReadDto> filtros)
         {
             _logger.LogInformation("Getting items from {Methods} at {RunTime}", nameof(GetBooks), DateTime.Now);
@@ -42,8 +42,7 @@ namespace Bookstore.API.Controllers
         }
 
         [HttpGet("{id}")]
-
-        //[Authorize]
+        [Authorize]
         public async Task<IActionResult> GetBook(int id)
         {
             _logger.LogInformation("Getting item {Id} from {Methods} at {RunTime}", id, nameof(GetBook), DateTime.Now);
@@ -59,6 +58,7 @@ namespace Bookstore.API.Controllers
 
         #region PUT
         [HttpPut]
+        [Authorize]
         public async Task<IActionResult> UpdateBook(BookRequest request)
         {
             _logger.LogInformation("Call {Methods} at {RunTime}", nameof(UpdateBook), DateTime.Now);

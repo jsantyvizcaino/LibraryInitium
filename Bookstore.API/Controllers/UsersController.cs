@@ -4,6 +4,7 @@ using Bookstore.Application.Features.Users.Queries;
 using Bookstore.Infrestructure.Controller;
 using Bookstore.Infrestructure.Filters;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.OData.Query;
 using System.Net;
@@ -25,7 +26,7 @@ namespace Bookstore.API.Controllers
         [HttpGet]
         [EnableQuery]
         [RespuestaOdataActionFilter]
-        //[Authorize]
+        [Authorize]
         public async Task<IActionResult> GetUsers(ODataQueryOptions<UserReadDto> filtros)
         {
             _logger.LogInformation("Getting items from {Methods} at {RunTime}", nameof(GetUsers), DateTime.Now);
@@ -39,8 +40,7 @@ namespace Bookstore.API.Controllers
         }
 
         [HttpGet("{id}")]
-
-        //[Authorize]
+        [Authorize]
         public async Task<IActionResult> GetUser(int id)
         {
             _logger.LogInformation("Getting item {Id} from {Methods} at {RunTime}", id, nameof(GetUser), DateTime.Now);
@@ -57,6 +57,7 @@ namespace Bookstore.API.Controllers
 
         #region Post
         [HttpPost]
+        [Authorize]
         public async Task<IActionResult> CreateUser(UserRequest request)
         {
             _logger.LogInformation("Call {Methods} at {RunTime}", nameof(CreateUser), DateTime.Now);
