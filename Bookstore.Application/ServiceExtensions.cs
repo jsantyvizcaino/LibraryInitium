@@ -1,12 +1,19 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using MediatR;
+using Microsoft.Extensions.DependencyInjection;
+using System.Reflection;
 
 namespace Bookstore.Application
 {
-    internal class ServiceExtensions
+    public static class ServiceExtensions
     {
+        public static IServiceCollection AddAplicationService(this IServiceCollection services)
+        {
+            services.AddAutoMapper(Assembly.GetExecutingAssembly());
+            services.AddMediatR(Assembly.GetExecutingAssembly());
+         
+
+            return services;
+        }
+
     }
 }

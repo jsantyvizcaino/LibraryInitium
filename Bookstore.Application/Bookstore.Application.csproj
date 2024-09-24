@@ -10,4 +10,18 @@
     <ProjectReference Include="..\Bookstore.Domain\Bookstore.Domain.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Behaviours\" />
+    <Folder Include="Features\Books\Commands\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="13.0.1" />
+    <PackageReference Include="AutoMapper.AspNetCore.OData.EFCore" Version="5.0.2" />
+    <PackageReference Include="FluentValidation" Version="11.10.0" />
+    <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="11.10.0" />
+    <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="11.0.0" />
+    <PackageReference Include="Microsoft.AspNetCore.OData" Version="9.0.0" />
+  </ItemGroup>
+
 </Project>
