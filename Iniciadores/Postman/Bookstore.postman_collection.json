@@ -1,0 +1,200 @@
+{
+	"info": {
+		"_postman_id": "5713ead3-75da-47a4-aa00-0bd7e9a3cf98",
+		"name": "Bookstore",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "9720695",
+		"_collection_link": "https://santiagovizcaino.postman.co/workspace/FREELANCE~32835532-a2c4-4106-baa6-395daee40e4f/collection/9720695-5713ead3-75da-47a4-aa00-0bd7e9a3cf98?action=share&source=collection_link&creator=9720695"
+	},
+	"item": [
+		{
+			"name": "Aunteticacion",
+			"item": [
+				{
+					"name": "Get token",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"username\": \"svizcaino\",\r\n  \"password\": \"Test.2025!\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://localhost:7195/api/auth/login",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "7195",
+							"path": [
+								"api",
+								"auth",
+								"login"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Usuarios",
+			"item": [
+				{
+					"name": "Obtener usuario y libros",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJodHRwOi8vd3d3LnczLm9yZy8yMDAxLzA0L3htbGRzaWctbW9yZSNobWFjLXNoYTI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3MjcyMDgyMTEsImlzcyI6IlNhbnRpYWdvIiwiYXVkIjoiQm9va0F1ZGllbmNlIn0.gcGT51TFpq6sdY9Zrbf8xV0dVmcVvnromSTizg6Byug",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://localhost:7195/api/Users/1",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "7195",
+							"path": [
+								"api",
+								"Users",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Crear usuario",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"usuario\": {\r\n    \"username\": \"string\",\r\n    \"password\": \"string\",\r\n    \"fullName\": \"string\",\r\n    \"email\": \"string\"\r\n  }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://localhost:7195/api/Users",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "7195",
+							"path": [
+								"api",
+								"Users"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Libros",
+			"item": [
+				{
+					"name": "get Books",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJodHRwOi8vd3d3LnczLm9yZy8yMDAxLzA0L3htbGRzaWctbW9yZSNobWFjLXNoYTI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3MjcyMDgyMTEsImlzcyI6IlNhbnRpYWdvIiwiYXVkIjoiQm9va0F1ZGllbmNlIn0.gcGT51TFpq6sdY9Zrbf8xV0dVmcVvnromSTizg6Byug",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://localhost:7195/api/Books?$top=5&$skip=0",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "7195",
+							"path": [
+								"api",
+								"Books"
+							],
+							"query": [
+								{
+									"key": "$filter",
+									"value": "Author eq 'Antoine de Saint-Exupéry'",
+									"disabled": true
+								},
+								{
+									"key": "$top",
+									"value": "5"
+								},
+								{
+									"key": "$skip",
+									"value": "0"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "asignar usuario a libro",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJodHRwOi8vd3d3LnczLm9yZy8yMDAxLzA0L3htbGRzaWctbW9yZSNobWFjLXNoYTI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3MjcyMDgyMTEsImlzcyI6IlNhbnRpYWdvIiwiYXVkIjoiQm9va0F1ZGllbmNlIn0.gcGT51TFpq6sdY9Zrbf8xV0dVmcVvnromSTizg6Byug",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"book\": {\r\n    \"id\": 1,\r\n    \"usuarioId\": 1\r\n  }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://localhost:7195/api/Books",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "7195",
+							"path": [
+								"api",
+								"Books"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
