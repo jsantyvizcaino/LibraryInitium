@@ -27,13 +27,15 @@ namespace Bookstore.Application.Features.Books.Commands
         public async Task<Response<int>> Handle(UpdateBookCommand command, CancellationToken cancellationToken)
         {
             var entityToUpdate = command.Book;
-            if (entityToUpdate.UsuarioId is null) throw new ApiException("It is necesary send the User ID");
+            if (entityToUpdate.UsuarioId is null || entityToUpdate.UsuarioId ==0) throw new ApiException("It is necesary send the User ID");
             var entity = await _repository.GetById(entityToUpdate.Id);
             if (entity == null) throw new KeyNotFoundException($"Book Not Found");
       
             if (!await UserExcist((int)entityToUpdate.UsuarioId)) throw new KeyNotFoundException($"User Not Found");
 
-            if(await NumLibrosByUser((int)entityToUpdate.UsuarioId)>=3) throw new ApiException("User can't have more that 3 books");
+            if(entity.UsuarioId is not null && entity.UsuarioId==entityToUpdate.UsuarioId) throw new ApiException("This book is already assigned to the User");
+
+            if (await NumLibrosByUser((int)entityToUpdate.UsuarioId)>=3) throw new ApiException("User can't have more that 3 books");
 
 
             entity.UsuarioId=entityToUpdate.UsuarioId;
