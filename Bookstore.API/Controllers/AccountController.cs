@@ -22,9 +22,10 @@ namespace Bookstore.API.Controllers
         [HttpPost("auth/login")]
         public async Task<IActionResult> AuthenticateAsync(AuthenticationRequest request)
         {
+            _logger.LogInformation("Request to {Methods} at {RunTime}", nameof(AuthenticateAsync), DateTime.Now);
             return Ok(await Mediator.Send(new AuthenticateCommand
             {
-                Email = request.Email,
+                Username = request.Username,
                 Password = request.Password,
                 IpAddress = GenerateIpAddress()
             }));

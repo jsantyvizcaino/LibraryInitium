@@ -2,6 +2,7 @@ using Bookstore.API.Configurations;
 using Bookstore.API.Extensions;
 using Bookstore.Application;
 using Bookstore.Application.DTOs;
+using Bookstore.Domain.Common;
 using Bookstore.Infrestructure;
 using Microsoft.AspNetCore.OData;
 using Microsoft.OpenApi.Models;
@@ -22,6 +23,8 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddAplicationService();
 builder.Services.AddIfraServices(configuration);
 builder.Services.AddSharedInfraestructure(configuration);
+
+builder.Services.AddSingleton<SecurityManager>();
 
 builder.Services.AddCors(options =>
 {

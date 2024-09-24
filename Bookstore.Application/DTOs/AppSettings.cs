@@ -4,13 +4,14 @@
     {
        
         public ServicioAutenticacion ServicioAutenticacion { get; set; }
-     
+        public EncryptionSettings EncryptionSettings { get; set; }
         public JWT JWT { get; set; }
         public AppSettings()
         {
            
             ServicioAutenticacion = new ServicioAutenticacion();
             JWT = new JWT();
+            EncryptionSettings = new EncryptionSettings();
         }
 
         
@@ -29,6 +30,11 @@
         public string Issuer { get; set; } = null!;
         public string Audience { get; set; } = null!;
         public double DurationInMinutes { get; set; }
+    }
+    public class EncryptionSettings
+    {
+        public string Key { get; set; } = null!;
+        public string IV { get; set; } = null!;
     }
 }
 

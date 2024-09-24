@@ -1,11 +1,12 @@
 ﻿using Bookstore.Application.DTOs.User;
-using Bookstore.Application.Features.Books.Queries;
+using Bookstore.Application.DTOs.User.Request;
 using Bookstore.Application.Features.Users.Queries;
 using Bookstore.Infrestructure.Controller;
 using Bookstore.Infrestructure.Filters;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.OData.Query;
+using System.Net;
 
 namespace Bookstore.API.Controllers
 {
@@ -20,6 +21,7 @@ namespace Bookstore.API.Controllers
             _logger = logger;
         }
 
+        #region Get
         [HttpGet]
         [EnableQuery]
         [RespuestaOdataActionFilter]
@@ -50,5 +52,22 @@ namespace Bookstore.API.Controllers
             _logger.LogWarning("Not found item {Id} from {Methods} at {RunTime}", id, nameof(GetUser), DateTime.Now);
             return NoContent();
         }
+        #endregion
+
+
+        #region Post
+        [HttpPost]
+        public async Task<IActionResult> CreateUser(UserRequest request)
+        {
+            _logger.LogInformation("Call {Methods} at {RunTime}", nameof(CreateUser), DateTime.Now);
+            var comando = request.ToCreate();
+            var resultado = await Mediator.Send(comando);
+            if (resultado.Succeeded)
+                return StatusCode((int)HttpStatusCode.Created, resultado);
+
+            
+            return BadRequest(resultado);
+        }
+        #endregion
     }
 }
