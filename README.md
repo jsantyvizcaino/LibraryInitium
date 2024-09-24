@@ -1,6 +1,6 @@
 # Proyecto de Librería en .NET 8
 
-Este proyecto es una aplicación de gestión de una librería desarrollada utilizando **.NET 8**. Implementa las mejores prácticas de desarrollo de software, incluyendo **Clean Architecture**, **CQRS**, y **Mediator**, además de manejar autenticación con **JWT** mediante un servicio personalizado.
+Este proyecto es una aplicación de gestión de una librería desarrollada utilizando **.NET 8**. Implementa prácticas de desarrollo de software como: **Clean Architecture**, **CQRS**, y **Mediator**, además de manejar autenticación con **JWT** mediante un servicio personalizado.
 
 ## Características del Proyecto
 
@@ -14,18 +14,19 @@ Este proyecto es una aplicación de gestión de una librería desarrollada utili
 - **Repositorios e Interfaces**: La aplicación sigue el principio de abstracción utilizando interfaces y repositorios para manejar el acceso a los datos de manera limpia y desacoplada.
 - **Middleware de Control de Errores**: Implementado para capturar y manejar excepciones globales, proporcionando respuestas consistentes y detalladas ante errores.
 
+## Estructura del Proyecto
+
+El proyecto está dividido en las siguientes capas de acuerdo con los principios de **Clean Architecture**:
+
+- **Bookstore.Api**: Expone las APIs RESTful utilizando OData para las operaciones de consulta avanzadas. Además, se configura el middleware para el manejo de errores.
+- **Bookstore.Application**: Implementa los casos de uso, patrones CQRS, Mediator y lógica de aplicación.
+- **Bookstore.Domain**: Contiene las entidades de negocio, las interfaces de los repositorios y los servicios.
+- **Bookstore.Infrastructure**: Maneja la interacción con la base de datos utilizando Entity Framework, así como otros servicios como la autenticación con JWT.
+- **Shared**: Aloja el servicio de identidad y otros recursos compartidos entre las capas.
+
 ## Autenticación
 
 La autenticación en esta aplicación se maneja mediante **JWT** (JSON Web Token). Se desarrolló un servicio de autenticación que genera un token **Bearer** para el acceso a las API protegidas.
-
-## Estructura del Proyecto
-
-El proyecto está dividido en capas de acuerdo con los principios de **Clean Architecture**:
-
-- **Core**: Contiene las entidades de negocio, las interfaces de los repositorios y los servicios.
-- **Application**: Implementa los casos de uso, patrones CQRS, Mediator y lógica de aplicación.
-- **Infrastructure**: Maneja la interacción con la base de datos utilizando Entity Framework, así como otros servicios como la autenticación con JWT.
-- **API**: Expone las APIs RESTful utilizando OData para las operaciones de consulta avanzadas. Además, se configura el middleware para el manejo de errores.
 
 ## Cómo Empezar
 
