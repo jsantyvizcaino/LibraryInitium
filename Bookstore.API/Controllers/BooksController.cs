@@ -1,4 +1,6 @@
-﻿using Bookstore.Application.DTOs.Book;
+﻿using Azure.Core;
+using Bookstore.Application.DTOs.Book;
+using Bookstore.Application.DTOs.Book.Request;
 using Bookstore.Application.Features.Books.Queries;
 using Bookstore.Infrestructure.Controller;
 using Bookstore.Infrestructure.Filters;
@@ -6,6 +8,7 @@ using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.OData.Query;
+using System.Net;
 
 namespace Bookstore.API.Controllers
 {
@@ -21,7 +24,7 @@ namespace Bookstore.API.Controllers
             _logger = logger;
         }
 
-
+        #region GET
         [HttpGet]
         [EnableQuery]
         [RespuestaOdataActionFilter]
@@ -39,7 +42,7 @@ namespace Bookstore.API.Controllers
         }
 
         [HttpGet("{id}")]
-        
+
         //[Authorize]
         public async Task<IActionResult> GetBook(int id)
         {
@@ -52,5 +55,22 @@ namespace Bookstore.API.Controllers
             _logger.LogWarning("Not found item {Id} from {Methods} at {RunTime}", id, nameof(GetBook), DateTime.Now);
             return NoContent();
         }
+        #endregion
+
+        #region PUT
+        [HttpPut]
+        public async Task<IActionResult> UpdateBook(BookRequest request)
+        {
+            _logger.LogInformation("Call {Methods} at {RunTime}", nameof(UpdateBook), DateTime.Now);
+            var comando = request.ToUpdate();
+            var resultado = await Mediator.Send(comando);
+            if (resultado.Succeeded)
+                return StatusCode((int)HttpStatusCode.Created, resultado);
+
+
+            return BadRequest(resultado);
+        }
+        #endregion
+
     }
 }
