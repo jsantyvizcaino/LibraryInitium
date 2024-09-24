@@ -6,5 +6,7 @@ namespace Bookstore.Domain.Interfaces
     {
         IQueryable<Book> GetAllAsync();
         Task<Book?> GetById(int id);
+        Task<IQueryable<Book>?> GetByUserId(int id);
+        Task UpdateAsync(Book entity);
     }
 }

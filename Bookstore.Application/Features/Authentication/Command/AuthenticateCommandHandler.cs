@@ -18,7 +18,7 @@ namespace Bookstore.Application.Features.Authentication.Command
         {
             return await _accountService.AuthenticateAsync(new AuthenticationRequest
             {
-                Email = request.Email,
+                Username = request.Username,
                 Password = request.Password,
             }, request.IpAddress);
         }

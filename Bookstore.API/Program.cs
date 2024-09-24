@@ -2,14 +2,20 @@ using Bookstore.API.Configurations;
 using Bookstore.API.Extensions;
 using Bookstore.Application;
 using Bookstore.Application.DTOs;
+using Bookstore.Domain.Common;
 using Bookstore.Infrestructure;
+using Bookstore.Infrestructure.Seed;
 using Microsoft.AspNetCore.OData;
+using Microsoft.Extensions.Options;
 using Microsoft.OpenApi.Models;
 using Shared;
 using Steeltoe.Extensions.Configuration.ConfigServer;
 
 ObtenerConfiguracion(out var configuration);
 var builder = WebApplication.CreateBuilder(args);
+
+
+
 var appSettings = new AppSettings();
 configuration.Bind(appSettings);
 builder.Services.Configure<AppSettings>(configuration);
@@ -22,6 +28,8 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddAplicationService();
 builder.Services.AddIfraServices(configuration);
 builder.Services.AddSharedInfraestructure(configuration);
+
+builder.Services.AddSingleton<SecurityManager>();
 
 builder.Services.AddCors(options =>
 {
@@ -43,7 +51,7 @@ builder.Services.AddControllers(options => options.EnableEndpointRouting = false
 
 var app = builder.Build();
 
-
+MigrateAndSeedDatabase(app);
 
 
 // Configure the HTTP request pipeline.
@@ -93,4 +101,24 @@ static void ObtenerConfiguracion(out IConfiguration configuration)
         .AddEnvironmentVariables()
         .AddConfigServer()
         .Build();
+}
+
+static void MigrateAndSeedDatabase(IHost host)
+{
+    using (var scope = host.Services.CreateScope())
+    {
+        var services = scope.ServiceProvider;
+        try
+        {
+            var context = services.GetRequiredService<LibraryContext>();
+            var logger = services.GetRequiredService<ILogger<UserContextSeed>>();
+            var appSettings = services.GetRequiredService<IOptions<AppSettings>>();
+            UserContextSeed.SeedAsync(context, logger, appSettings).Wait();
+        }
+        catch (Exception ex)
+        {
+            var logger = services.GetRequiredService<ILogger<Program>>();
+            logger.LogError(ex, "An error occurred while migrating or seeding the database.");
+        }
+    }
 }

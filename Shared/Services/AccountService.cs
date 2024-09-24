@@ -7,21 +7,32 @@ using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Text;
+using Bookstore.Domain.Interfaces;
+using Bookstore.Domain.Common;
+
+
 
 namespace Shared.Services
 {
     public class AccountService : IAccountService
     {
         private readonly AppSettings _configuration;
+        private readonly IUserRepository _repository;
 
-        public AccountService(IOptions<AppSettings> configuration)
+        public AccountService(IOptions<AppSettings> configuration, IUserRepository repository)
         {
             _configuration = configuration.Value;
+            _repository = repository;
         }
 
         public async Task<Response<AuthenticationResponse>> AuthenticateAsync(AuthenticationRequest request, string ipAddress)
         {
-            if (request.Email == "sapmax@kruger.com" && request.Password == "generarPassword")
+            var user = await _repository.GetByUsername(request.Username);
+            if (user == null) throw new ApiException($"Credenciales invalidas");
+            string decryptedPassword = SecurityManager.DecryptPassword(user.Password, _configuration.EncryptionSettings.Key
+               , _configuration.EncryptionSettings.IV);
+
+            if (request.Password == decryptedPassword)
             {
                 JwtSecurityToken jwtSecurityToken = GenerateJWTToken();
                 AuthenticationResponse response = new AuthenticationResponse();
